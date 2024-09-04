@@ -1,8 +1,9 @@
 const Todo = require("../models/todoModel");
 
-exports.getTodos = async () => {
+// Get all todos for a specific trip
+exports.getTodosByTripId = async (tripId) => {
   try {
-    const todos = await Todo.find().sort({ order: 1 });
+    const todos = await Todo.find({ tripId }).sort({ order: 1 });
     return todos;
   } catch (error) {
     console.error("Error fetching todos:", error);
@@ -10,10 +11,11 @@ exports.getTodos = async () => {
   }
 };
 
-exports.createTodo = async (taskName, assignee, priority) => {
+// Create a new todo for a trip
+exports.createTodo = async (taskName, assignee, priority, tripId) => {
   try {
-    const order = (await Todo.countDocuments()) + 1;
-    const todo = new Todo({ taskName, assignee, priority, order });
+    const order = (await Todo.countDocuments({ tripId })) + 1;
+    const todo = new Todo({ taskName, assignee, priority, order, tripId });
     await todo.save();
     return todo;
   } catch (error) {
@@ -22,6 +24,7 @@ exports.createTodo = async (taskName, assignee, priority) => {
   }
 };
 
+// Update a todo by ID
 exports.updateTodo = async (id, data) => {
   try {
     const updatedTodo = await Todo.findByIdAndUpdate(id, data, { new: true });
@@ -35,17 +38,16 @@ exports.updateTodo = async (id, data) => {
   }
 };
 
+// Delete a todo by ID and update the order of remaining todos for the trip
 exports.deleteTodo = async (id) => {
   try {
-    // Find and delete the todo
     const deletedTodo = await Todo.findByIdAndDelete(id);
     if (!deletedTodo) {
       throw new Error("Todo not found");
     }
 
-    // Update the order of the remaining todos
     await Todo.updateMany(
-      { order: { $gt: deletedTodo.order } },
+      { tripId: deletedTodo.tripId, order: { $gt: deletedTodo.order } },
       { $inc: { order: -1 } }
     );
 
@@ -56,6 +58,7 @@ exports.deleteTodo = async (id) => {
   }
 };
 
+// Reorder todos for a specific trip
 exports.reorderTodos = async (todos) => {
   try {
     for (let i = 0; i < todos.length; i++) {

@@ -6,6 +6,11 @@ const todoSchema = new mongoose.Schema(
     assignee: { type: String, required: true },
     priority: { type: String, enum: ["Low", "Medium", "High"], required: true },
     order: { type: Number, required: true },
+    tripId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Trip",
+      required: true, // Link each todo to a trip
+    },
   },
   { timestamps: true }
 );

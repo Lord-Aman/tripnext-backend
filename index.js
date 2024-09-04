@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const todoRoutes = require("./routes/todoRoutes");
+const tripRoutes = require("./routes/tripRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 
 require("dotenv").config();
 
@@ -13,6 +15,8 @@ app.use(express.json());
 
 // Prefix all routes with /api/todos
 app.use("/api/todos", todoRoutes);
+app.use("/api/trips", tripRoutes);
+app.use("/api/events", eventRoutes);
 
 // Health check route
 app.get("/api/health", (req, res) => {
