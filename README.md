@@ -49,7 +49,7 @@ Create a `.env` file in the root directory with the following variables:
 
 ```env
 MONGO_URI=your-mongodb-connection-string
-PORT=3000
+PORT=5000
 ```
 
 ### Run the Server
@@ -60,7 +60,7 @@ Start the server locally with the following command:
 npm start
 ```
 
-The server will be running on `http://localhost:3000`.
+The server will be running on `http://localhost:5000`.
 
 ### Run in Development Mode
 
