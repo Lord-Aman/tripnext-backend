@@ -72,11 +72,6 @@ npm run dev
 
 ## API Endpoints
 
-### User Routes
-
-- **POST** `/api/users/register`: Register a new user.
-- **POST** `/api/users/login`: Authenticate a user and return a JWT token.
-
 ### Trip Routes
 
 - **GET** `/api/trips`: Retrieve all trips for the logged-in user.
